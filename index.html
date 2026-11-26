@@ -1755,9 +1755,9 @@ If nothing found: [No Words Found] None*None-कोणतेही शब्द 
             ? `<div class="chip-row">${enrich.marathiSynonyms.map(s => `<span class="syn-chip marathi-chip">${s}</span>`).join('')}</div>`
             : `<span class="no-data-mini">मराठी समानार्थी शब्द आढळले नाहीत</span>`;
 
-        const imageBlock = (enrich.imageUrl && /^https:\/\/upload\.wikimedia\.org\//.test(enrich.imageUrl))
+        const imageBlock = (enrich.imageUrl && /^https:\/\/(upload|thumb)\.wikimedia\.org\//.test(enrich.imageUrl))
             ? `<div class="expand-image">
-                    <img src="${enrich.imageUrl}" alt="${(enrich.imageTitle || '').replace(/"/g, '')}" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.innerHTML='Image unavailable';">
+                    <img src="${enrich.imageUrl}" alt="${(enrich.imageTitle || '').replace(/"/g, '')}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.innerHTML='Image unavailable';">
                     <small>Image: <a href="https://en.wikipedia.org/wiki/${encodeURIComponent((enrich.imageTitle || '').replace(/ /g, '_'))}" target="_blank" rel="noopener">Wikipedia</a></small>
                </div>`
             : '';
@@ -1987,7 +1987,7 @@ Word|PartOfSpeech|MarathiExplanation|EnglishSynonym1,EnglishSynonym2,EnglishSyno
         try {
             const img = await fetchWordImage(queryTerm);
             enrichData.imageChecked = true;
-            if (img && /^https:\/\/upload\.wikimedia\.org\//.test(img.url)) {
+            if (img && /^https:\/\/(upload|thumb)\.wikimedia\.org\//.test(img.url)) {
                 enrichData.imageUrl = img.url;
                 enrichData.imageTitle = img.title;
             }
